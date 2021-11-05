@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tasks',
+    'popug_auth',
 ]
 
 MIDDLEWARE = [
@@ -123,3 +125,12 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'popug_auth.User'
+
+CLIENT_ID = "OysFjCgW9fyZCZyE32cueQ14Q7jFxsNa1AAUuD9C"
+CLIENT_SECRET = "4vgaQr3wHBzYySVu8qcj5BRmAzdJesBKZFeYuRQXuBJVn1BRSLFPijjwrZb3eoNnXRsTLiK4pHZY1Drr5j90Vh5SdenLOEBiZ4Hix0bo677fIWGRk0FzgDKpJSXZSzuS"
+
+AUTH_CALLBACK = "http://127.0.0.1:8000/authorize/callback"
+
+LOGIN_URL = f"http://127.0.0.1:8080/o/authorize/?response_type=code&client_id={CLIENT_ID}&redirect_uri={AUTH_CALLBACK}"
