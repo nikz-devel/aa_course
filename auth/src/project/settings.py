@@ -131,3 +131,5 @@ AUTH_USER_MODEL = 'accounts.User'
 
 LOGIN_URL = "/account/login/"
 
+KAFKA_SERVER = "localhost:9092"
+

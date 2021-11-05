@@ -138,3 +138,6 @@ CLIENT_SECRET = "4vgaQr3wHBzYySVu8qcj5BRmAzdJesBKZFeYuRQXuBJVn1BRSLFPijjwrZb3eoN
 
 
 LOGIN_URL = f"http://127.0.0.1:8080/o/authorize/?response_type=code&client_id={CLIENT_ID}&redirect_uri={AUTH_CALLBACK}"
+
+KAFKA_SERVER = "localhost:9092"
+
