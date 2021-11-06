@@ -21,16 +21,15 @@ class KafkaEventTransport:
         self.producer.send(topic, data)
 
 
-producer = KafkaProducer(bootstrap_servers=settings.KAFKA_SERVER)
-default_transport = KafkaEventTransport(producer)
 
 
 class Event(ABC):
     topic: str = "default"
     event_type: Optional[str] = None
 
-    def __init__(self, transport: EventTransport = default_transport) -> None:
-        self.transport = transport
+    def __init__(self) -> None:
+        producer = KafkaProducer(bootstrap_servers=settings.KAFKA_SERVER)
+        self.transport = KafkaEventTransport(producer)
 
     @abstractmethod
     def make_event_data(self) -> Dict[str, Any]:
@@ -50,9 +49,9 @@ class UserCreatedEvent(Event):
     topic = "user_stream"
     event_type = "user.created"
 
-    def __init__(self, user: User, *args, **kwargs) -> None:
+    def __init__(self, user: User) -> None:
         self.user = user
-        super().__init__(*args, **kwargs)
+        super().__init__()
 
     def make_event_data(self) -> Dict[str, Any]:
         return {

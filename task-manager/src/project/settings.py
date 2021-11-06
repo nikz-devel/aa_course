@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -120,7 +121,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATIC_ROOT = '/static/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -128,16 +129,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'popug_auth.User'
 
-AUTH_TOKEN_URL = "http://127.0.0.1:8080/o/token/"
+OAUTH_BASE_URL = os.environ.setdefault("OAUTH_BASE_URL", 'http://127.0.0.1:8080/')
+BASE_URL = os.environ.setdefault("BASE_URL", 'http://127.0.0.1:8000/')
 
-AUTH_CALLBACK = "http://127.0.0.1:8000/authorize/callback"
-AUTH_USERINFO_URL = "http://127.0.0.1:8080/account/info"
+AUTH_TOKEN_URL = os.environ.setdefault("OAUTH_TOKEN_URL", 'http://127.0.0.1:8080/o/token/')
+AUTH_USERINFO_URL = os.environ.setdefault("OAUTH_USERINFO_URL", 'http://127.0.0.1:8080/account/info')
+
+AUTH_CALLBACK = f'{BASE_URL}authorize/callback'
 
 CLIENT_ID = "OysFjCgW9fyZCZyE32cueQ14Q7jFxsNa1AAUuD9C"
 CLIENT_SECRET = "4vgaQr3wHBzYySVu8qcj5BRmAzdJesBKZFeYuRQXuBJVn1BRSLFPijjwrZb3eoNnXRsTLiK4pHZY1Drr5j90Vh5SdenLOEBiZ4Hix0bo677fIWGRk0FzgDKpJSXZSzuS"
 
 
-LOGIN_URL = f"http://127.0.0.1:8080/o/authorize/?response_type=code&client_id={CLIENT_ID}&redirect_uri={AUTH_CALLBACK}"
+LOGIN_URL = f"{OAUTH_BASE_URL}o/authorize/?response_type=code&client_id={CLIENT_ID}&redirect_uri={AUTH_CALLBACK}"
 
-KAFKA_SERVER = "localhost:9092"
+KAFKA_SERVER = os.environ.setdefault("KAFKA_SERVER", "127.0.0.1:9092")
 

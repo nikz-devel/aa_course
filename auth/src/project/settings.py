@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-ht4#03%g((*vhdxx=23=p&ylywscyl+0&c0#bnh4)55&^gu94s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -121,6 +121,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -131,5 +132,5 @@ AUTH_USER_MODEL = 'accounts.User'
 
 LOGIN_URL = "/account/login/"
 
-KAFKA_SERVER = "localhost:9092"
+KAFKA_SERVER = os.environ.get("KAFKA_SERVER", "localhost:9092")
 

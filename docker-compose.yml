@@ -2,6 +2,47 @@
 version: "2"
 
 services:
+  reverse-proxy:
+    image: traefik:v2.2
+    command: --api.insecure=true --providers.docker
+    ports:
+      - "80:80"
+      - "8888:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  popug-auth:
+    build: auth
+    ports:
+      - "8080:5000"
+    depends_on:
+      - broker
+    environment:
+      KAFKA_SERVER: 'broker:9092'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.popug-auth.rule=Host(`id.popug.localhost`)"
+
+  popug-tasks:
+    build: task-manager
+    ports:
+      - "8000:5000"
+    depends_on:
+      - popug-auth
+      - broker
+    environment:
+      KAFKA_SERVER: 'broker:9092'
+      OAUTH_BASE_URL: 'http://id.popug.localhost/'
+      BASE_URL: 'http://tasks.popug.localhost/'
+      OAUTH_TOKEN_URL: 'popug-auth:8080/o/token/'
+      OAUTH_USERINFO_URL: 'popug-auth:8080/account/info'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.popug-tasks.rule=Host(`tasks.popug.localhost`)"
+    links:
+      - popug-auth
+
+
   zookeeper:
     image: confluentinc/cp-zookeeper:5.4.1
     hostname: zookeeper
