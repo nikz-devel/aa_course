@@ -1,0 +1,4 @@
+{
+    "vim.easymotion": true,
+    "vim.leader": " "
+}
